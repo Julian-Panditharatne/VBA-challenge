@@ -1,22 +1,22 @@
 Sub CheckDates():
     Thisworkbook.save ' Saving the workbook before this and other subroutines are run; got this code to save workbooks from Thet Win on BootCamp Slack: https://utorvirtdatap-mqk9076.slack.com/archives/C06Q9D6BP3Q/p1714748773608419
     Dim ws As Worksheet
-    ' Got the code for looping through worksheets from https://www.goskills.com/Excel/Resources/VBA-code-library#Worksheetcodes
-    For Each ws In ActiveWorkbook.Worksheet
-        Dim num_rows As Long
-        Dim num_columns As Long
-        num_rows = ws.Rows.Count ' Got the code for counting the rows in a worksheet from https://www.homeandlearn.org/other_excel_vba_variable_types.html
-        num_columns = ws.Columns.Count
-        ' Converting all values in the Date to Date data Type in a loop. 
-		' Found the functions in this loop on https://learn.microsoft.com/en-us/office/vba/language/reference/user-interface-help/visual-basic-language-reference
-        For i = 2 To num_rows
-            If Not VarType(Cells(i, 2).Value) = 7 Then
-                Cells(i, 2).Value = CDate(Cells(i, 2).Value)
+    Dim cell As Range
+    ' Got the code for looping through worksheets from from Week 2 Class 3 Activities.
+    For Each ws In Worksheets
+        ' Got this code from Xpert Learning Assitant
+        ws.Activate
+        For Each cell In Range("B:B")
+            If IsDate(cell.Value) Then
+                ' Check if the cell value is already a date
+                cell.NumberFormat = "mm/dd/yyyy"
+            ' Convert the cell value to a date if it's not already in date format
+            ElseIf IsNumeric(cell.Value) And Len(cell.Value) = 8 Then
+                cell.Value = DateSerial(Left(cell.Value, 4), Mid(cell.Value, 5, 2), Right(cell.Value, 2))
+                cell.NumberFormat = "mm/dd/yyyy"  ' Change the date format as needed
             End If
-        Next i
-
+        Next cell
     Next ws
-
 End Sub
 Sub Quarter1Report():
     Dim ws As Worksheet
@@ -40,8 +40,9 @@ Sub Quarter1Report():
     'AutoFit the columns using code from https://www.automateexcel.com/vba/ranges-cells/#range-properties'
     q1.Columns("I:L").AutoFit
 
-    ' Got the code for looping through worksheets from https://www.goskills.com/Excel/Resources/VBA-code-library#Worksheetcodes
-    For Each ws In ActiveWorkbook.Worksheet
+    ' Got the code for looping through worksheets from from Week 2 Class 3 Activities.
+    For Each ws In Worksheets
+        ws.Activate ' Added this after getting advice from Xpert Learning Assitant when CheckDates Subroutine wasn't looping through all the worksheets.
         Dim num_entries As Long
         num_entries = ws.Cells(Rows.Count, 1).End(xlUp).Row ' Got the code for counting the rows from Week 2 Class 3 Activities.
         
@@ -63,10 +64,10 @@ Sub Quarter1Report():
                     ticker_close = Cells(i, 6).Value
 					' Update total stock volume by adding in the volumn column value for this entry.
                     total_stock_volume = total_stock_volume + Cells(i, 7).Value
-				Else If Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
+				ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
 					' Skipping entries of ticker for other quarters until loop reaches a different ticker.
 					Next j
-				Else If Cells(j, 1).Value <> ticker Then
+				ElseIf Cells(j, 1).Value <> ticker Then
 					' Loop has reached a different ticker, so the loop will be stopped.
 					' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
 					i = j-1
@@ -113,8 +114,9 @@ Sub Quarter2Report():
     'AutoFit the columns using code from https://www.automateexcel.com/vba/ranges-cells/#range-properties'
     q2.Columns("I:L").AutoFit
 
-    ' Got the code for looping through worksheets from https://www.goskills.com/Excel/Resources/VBA-code-library#Worksheetcodes
-    For Each ws In ActiveWorkbook.Worksheet
+    ' Got the code for looping through worksheets from from Week 2 Class 3 Activities.
+    For Each ws In Worksheets
+        ws.Activate ' Added this after getting advice from Xpert Learning Assitant when CheckDates Subroutine wasn't looping through all the worksheets.
         Dim num_entries As Long
         num_entries = ws.Cells(Rows.Count, 1).End(xlUp).Row ' Got the code for counting the rows from Week 2 Class 3 Activities.
         
@@ -136,10 +138,10 @@ Sub Quarter2Report():
                     ticker_close = Cells(i, 6).Value
 					' Update total stock volume by adding in the volumn column value for this entry.
                     total_stock_volume = total_stock_volume + Cells(i, 7).Value
-				Else If Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
+				ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
 					' Skipping entries of ticker for other quarters until loop reaches a different ticker.
 					Next j
-				Else If Cells(j, 1).Value <> ticker Then
+				ElseIf Cells(j, 1).Value <> ticker Then
 					' Loop has reached a different ticker, so the loop will be stopped.
 					' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
 					i = j-1
@@ -186,8 +188,9 @@ Sub Quarter3Report():
     'AutoFit the columns using code from https://www.automateexcel.com/vba/ranges-cells/#range-properties'
     q3.Columns("I:L").AutoFit
 
-    ' Got the code for looping through worksheets from https://www.goskills.com/Excel/Resources/VBA-code-library#Worksheetcodes
-    For Each ws In ActiveWorkbook.Worksheet
+    ' Got the code for looping through worksheets from from Week 2 Class 3 Activities.
+    For Each ws In Worksheets
+        ws.Activate ' Added this after getting advice from Xpert Learning Assitant when CheckDates Subroutine wasn't looping through all the worksheets.
         Dim num_entries As Long
         num_entries = ws.Cells(Rows.Count, 1).End(xlUp).Row ' Got the code for counting the rows from Week 2 Class 3 Activities.
         
@@ -209,10 +212,10 @@ Sub Quarter3Report():
                     ticker_close = Cells(i, 6).Value
 					' Update total stock volume by adding in the volumn column value for this entry.
                     total_stock_volume = total_stock_volume + Cells(i, 7).Value
-				Else If Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
+				ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
 					' Skipping entries of ticker for other quarters until loop reaches a different ticker.
 					Next j
-				Else If Cells(j, 1).Value <> ticker Then
+				ElseIf Cells(j, 1).Value <> ticker Then
 					' Loop has reached a different ticker, so the loop will be stopped.
 					' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
 					i = j-1
@@ -259,8 +262,9 @@ Sub Quarter4Report():
     'AutoFit the columns using code from https://www.automateexcel.com/vba/ranges-cells/#range-properties'
     q4.Columns("I:L").AutoFit
 
-    ' Got the code for looping through worksheets from https://www.goskills.com/Excel/Resources/VBA-code-library#Worksheetcodes
-    For Each ws In ActiveWorkbook.Worksheet
+    ' Got the code for looping through worksheets from from Week 2 Class 3 Activities.
+    For Each ws In Worksheets
+        ws.Activate ' Added this after getting advice from Xpert Learning Assitant when CheckDates Subroutine wasn't looping through all the worksheets.
         Dim num_entries As Long
         num_entries = ws.Cells(Rows.Count, 1).End(xlUp).Row ' Got the code for counting the rows from Week 2 Class 3 Activities.
         
@@ -282,10 +286,10 @@ Sub Quarter4Report():
                     ticker_close = Cells(i, 6).Value
 					' Update total stock volume by adding in the volumn column value for this entry.
                     total_stock_volume = total_stock_volume + Cells(i, 7).Value
-				Else If Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
+				ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
 					' Skipping entries of ticker for other quarters until loop reaches a different ticker.
 					Next j
-				Else If Cells(j, 1).Value <> ticker Then
+				ElseIf Cells(j, 1).Value <> ticker Then
 					' Loop has reached a different ticker, so the loop will be stopped.
 					' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
 					i = j-1
