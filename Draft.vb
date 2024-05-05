@@ -50,7 +50,7 @@ Sub Quarter1Report():
             ' If Then condition that keeps skipping entries until loop reaches the right quarter(1).
             ' Found out about Month function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
             If Month(Cells(i, 2).Value) < quarter_months(1) Then
-                Next i
+                Continue For
             End If
 
             ticker = Cells(i, 1).Value
@@ -66,7 +66,7 @@ Sub Quarter1Report():
                     total_stock_volume = total_stock_volume + Cells(i, 7).Value
 				ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
 					' Skipping entries of ticker for other quarters until loop reaches a different ticker.
-					Next j
+					Continue For
 				ElseIf Cells(j, 1).Value <> ticker Then
 					' Loop has reached a different ticker, so the loop will be stopped.
 					' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
@@ -124,7 +124,7 @@ Sub Quarter2Report():
             ' If Then condition that keeps skipping entries until loop reaches the right quarter(1).
             ' Found out about Month function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
             If Month(Cells(i, 2).Value) < quarter_months(1) Then
-                Next i
+                Continue For
             End If
 
             ticker = Cells(i, 1).Value
@@ -140,7 +140,7 @@ Sub Quarter2Report():
                     total_stock_volume = total_stock_volume + Cells(i, 7).Value
 				ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
 					' Skipping entries of ticker for other quarters until loop reaches a different ticker.
-					Next j
+					Continue For
 				ElseIf Cells(j, 1).Value <> ticker Then
 					' Loop has reached a different ticker, so the loop will be stopped.
 					' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
@@ -198,7 +198,7 @@ Sub Quarter3Report():
             ' If Then condition that keeps skipping entries until loop reaches the right quarter(1).
             ' Found out about Month function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
             If Month(Cells(i, 2).Value) < quarter_months(1) Then
-                Next i
+                Continue For
             End If
 
             ticker = Cells(i, 1).Value
@@ -214,7 +214,7 @@ Sub Quarter3Report():
                     total_stock_volume = total_stock_volume + Cells(i, 7).Value
 				ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
 					' Skipping entries of ticker for other quarters until loop reaches a different ticker.
-					Next j
+					Continue For
 				ElseIf Cells(j, 1).Value <> ticker Then
 					' Loop has reached a different ticker, so the loop will be stopped.
 					' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
@@ -272,7 +272,7 @@ Sub Quarter4Report():
             ' If Then condition that keeps skipping entries until loop reaches the right quarter(1).
             ' Found out about Month function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
             If Month(Cells(i, 2).Value) < quarter_months(1) Then
-                Next i
+                Continue For
             End If
 
             ticker = Cells(i, 1).Value
@@ -288,7 +288,7 @@ Sub Quarter4Report():
                     total_stock_volume = total_stock_volume + Cells(i, 7).Value
 				ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
 					' Skipping entries of ticker for other quarters until loop reaches a different ticker.
-					Next j
+					Continue For
 				ElseIf Cells(j, 1).Value <> ticker Then
 					' Loop has reached a different ticker, so the loop will be stopped.
 					' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
