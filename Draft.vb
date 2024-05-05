@@ -49,46 +49,43 @@ Sub Quarter1Report():
         For i = 2 To num_entries
             ' If Then condition that keeps skipping entries until loop reaches the right quarter(1).
             ' Found out about Month function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
-            If Month(Cells(i, 2).Value) < quarter_months(1) Then
-                Continue For
+            If Not Month(Cells(i, 2).Value) < quarter_months(1) Then
+                ticker = Cells(i, 1).Value
+                ticker_open = Cells(i, 3).Value
+                ticker_close = Cells(i, 6).Value
+			    total_stock_volume = Cells(i, 7).Value
+
+                For j = i+1 To num_entries
+                    If Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) >= quarter_months(1) And Month(Cells(j, 2).Value) <= quarter_months(2) Then
+					    ' Update new close value to the close column value for this entry.
+                        ticker_close = Cells(i, 6).Value
+					    ' Update total stock volume by adding in the volumn column value for this entry.
+                        total_stock_volume = total_stock_volume + Cells(i, 7).Value
+				    ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
+					    ' Skipping entries of ticker for other quarters until loop reaches a different ticker.
+    					:
+	    			ElseIf Cells(j, 1).Value <> ticker Then
+		    			' Loop has reached a different ticker, so the loop will be stopped.
+			    		' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
+				    	i = j-1
+					    Exit For
+                    End If 
+                Next j
+
+                q1.Range("I" & q1_Row).Value = ticker ' Print the Ticker name into the report
+                q1.Range("J" & q1_Row).Value = ticker_close - ticker_open ' Print the Quarterly Change into the report
+                q1.Range("K" & q1_Row).Value = FormatPercent(q1.Range("J" & q1_Row).Value / ticker_open, -1, -1) ' Print the Percent Change, formatted as a percent value, into the report. Found out about FormatPercent function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
+                q1.Range("L" & q1_Row).Value = total_stock_volume ' Print the Total Stock Volume into the report
+                ' Format the Quarterly Change cell color to red if the value < 0 or to green if the value > 0.
+                If (ticker_close - ticker_open) < 0 Then
+                    q1.Range("J" & q1_Row).Interior.ColorIndex = 3 ' Got the code for formatting cell colors from Week 2 Class 3 Activities.
+                ElseIf (ticker_close - ticker_open) > 0 Then
+                    q1.Range("J" & q1_Row).Interior.ColorIndex = 4
+                End If
+
+                q1_Row = q1_Row + 1 ' Move on to the next row in the report.
             End If
-
-            ticker = Cells(i, 1).Value
-            ticker_open = Cells(i, 3).Value
-            ticker_close = Cells(i, 6).Value
-			total_stock_volume = Cells(i, 7).Value
-
-            For j = i+1 To num_entries
-                If Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) >= quarter_months(1) And Month(Cells(j, 2).Value) <= quarter_months(2) Then
-					' Update new close value to the close column value for this entry.
-                    ticker_close = Cells(i, 6).Value
-					' Update total stock volume by adding in the volumn column value for this entry.
-                    total_stock_volume = total_stock_volume + Cells(i, 7).Value
-				ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
-					' Skipping entries of ticker for other quarters until loop reaches a different ticker.
-					Continue For
-				ElseIf Cells(j, 1).Value <> ticker Then
-					' Loop has reached a different ticker, so the loop will be stopped.
-					' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
-					i = j-1
-					Exit For
-                End If 
-            Next j
-
-            q1.Range("I" & q1_Row).Value = ticker ' Print the Ticker name into the report
-            q1.Range("J" & q1_Row).Value = ticker_close - ticker_open ' Print the Quarterly Change into the report
-            q1.Range("K" & q1_Row).Value = FormatPercent(q1.Range("J" & q1_Row).Value / ticker_open, -1, -1) ' Print the Percent Change, formatted as a percent value, into the report. Found out about FormatPercent function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
-            q1.Range("L" & q1_Row).Value = total_stock_volume ' Print the Total Stock Volume into the report
-            ' Format the Quarterly Change cell color to red if the value < 0 or to green if the value > 0.
-            If (ticker_close - ticker_open) < 0 Then
-                q1.Range("J" & q1_Row).Interior.ColorIndex = 3 ' Got the code for formatting cell colors from Week 2 Class 3 Activities.
-            ElseIf (ticker_close - ticker_open) > 0 Then
-                q1.Range("J" & q1_Row).Interior.ColorIndex = 4
-            End If
-
-            q1_Row = q1_Row + 1 ' Move on to the next row in the report.
         Next i
-
     Next ws
 
 End Sub
@@ -121,48 +118,45 @@ Sub Quarter2Report():
         num_entries = ws.Cells(Rows.Count, 1).End(xlUp).Row ' Got the code for counting the rows from Week 2 Class 3 Activities.
         
         For i = 2 To num_entries
-            ' If Then condition that keeps skipping entries until loop reaches the right quarter(1).
+            ' If Then condition that keeps skipping entries until loop reaches the right quarter(2).
             ' Found out about Month function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
-            If Month(Cells(i, 2).Value) < quarter_months(1) Then
-                Continue For
+            If Not Month(Cells(i, 2).Value) < quarter_months(1) Then
+                ticker = Cells(i, 1).Value
+                ticker_open = Cells(i, 3).Value
+                ticker_close = Cells(i, 6).Value
+                total_stock_volume = Cells(i, 7).Value
+
+                For j = i+1 To num_entries
+                    If Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) >= quarter_months(1) And Month(Cells(j, 2).Value) <= quarter_months(2) Then
+                        ' Update new close value to the close column value for this entry.
+                        ticker_close = Cells(i, 6).Value
+                        ' Update total stock volume by adding in the volumn column value for this entry.
+                        total_stock_volume = total_stock_volume + Cells(i, 7).Value
+                    ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
+                        ' Skipping entries of ticker for other quarters until loop reaches a different ticker.
+                        :
+                    ElseIf Cells(j, 1).Value <> ticker Then
+                        ' Loop has reached a different ticker, so the loop will be stopped.
+                        ' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
+                        i = j-1
+                        Exit For
+                    End If 
+                Next j
+
+                q2.Range("I" & q2_Row).Value = ticker ' Print the Ticker name into the report
+                q2.Range("J" & q2_Row).Value = ticker_close - ticker_open ' Print the Quarterly Change into the report
+                q2.Range("K" & q2_Row).Value = FormatPercent(q2.Range("J" & q2_Row).Value / ticker_open, -1, -1) ' Print the Percent Change, formatted as a percent value, into the report. Found out about FormatPercent function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
+                q2.Range("L" & q2_Row).Value = total_stock_volume ' Print the Total Stock Volume into the report
+                ' Format the Quarterly Change cell color to red if the value < 0 or to green if the value > 0.
+                If (ticker_close - ticker_open) < 0 Then
+                    q2.Range("J" & q2_Row).Interior.ColorIndex = 3 ' Got the code for formatting cell colors from Week 2 Class 3 Activities.
+                ElseIf (ticker_close - ticker_open) > 0 Then
+                    q2.Range("J" & q2_Row).Interior.ColorIndex = 4
+                End If
+
+                q2_Row = q2_Row + 1 ' Move on to the next row in the report.
             End If
-
-            ticker = Cells(i, 1).Value
-            ticker_open = Cells(i, 3).Value
-            ticker_close = Cells(i, 6).Value
-			total_stock_volume = Cells(i, 7).Value
-
-            For j = i+1 To num_entries
-                If Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) >= quarter_months(1) And Month(Cells(j, 2).Value) <= quarter_months(2) Then
-					' Update new close value to the close column value for this entry.
-                    ticker_close = Cells(i, 6).Value
-					' Update total stock volume by adding in the volumn column value for this entry.
-                    total_stock_volume = total_stock_volume + Cells(i, 7).Value
-				ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
-					' Skipping entries of ticker for other quarters until loop reaches a different ticker.
-					Continue For
-				ElseIf Cells(j, 1).Value <> ticker Then
-					' Loop has reached a different ticker, so the loop will be stopped.
-					' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
-					i = j-1
-					Exit For
-                End If 
-            Next j
-
-            q2.Range("I" & q2_Row).Value = ticker ' Print the Ticker name into the report
-            q2.Range("J" & q2_Row).Value = ticker_close - ticker_open ' Print the Quarterly Change into the report
-            q2.Range("K" & q2_Row).Value = FormatPercent(q2.Range("J" & q2_Row).Value / ticker_open, -1, -1) ' Print the Percent Change, formatted as a percent value, into the report. Found out about FormatPercent function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
-            q2.Range("L" & q2_Row).Value = total_stock_volume ' Print the Total Stock Volume into the report
-            ' Format the Quarterly Change cell color to red if the value < 0 or to green if the value > 0.
-            If (ticker_close - ticker_open) < 0 Then
-                q2.Range("J" & q2_Row).Interior.ColorIndex = 3 ' Got the code for formatting cell colors from Week 2 Class 3 Activities.
-            ElseIf (ticker_close - ticker_open) > 0 Then
-                q2.Range("J" & q2_Row).Interior.ColorIndex = 4
-            End If
-
-            q2_Row = q2_Row + 1 ' Move on to the next row in the report.
         Next i
-
     Next ws
 
 End Sub
@@ -195,48 +189,45 @@ Sub Quarter3Report():
         num_entries = ws.Cells(Rows.Count, 1).End(xlUp).Row ' Got the code for counting the rows from Week 2 Class 3 Activities.
         
         For i = 2 To num_entries
-            ' If Then condition that keeps skipping entries until loop reaches the right quarter(1).
+            ' If Then condition that keeps skipping entries until loop reaches the right quarter(3).
             ' Found out about Month function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
-            If Month(Cells(i, 2).Value) < quarter_months(1) Then
-                Continue For
+            If Not Month(Cells(i, 2).Value) < quarter_months(1) Then
+                ticker = Cells(i, 1).Value
+                ticker_open = Cells(i, 3).Value
+                ticker_close = Cells(i, 6).Value
+                total_stock_volume = Cells(i, 7).Value
+
+                For j = i+1 To num_entries
+                    If Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) >= quarter_months(1) And Month(Cells(j, 2).Value) <= quarter_months(2) Then
+                        ' Update new close value to the close column value for this entry.
+                        ticker_close = Cells(i, 6).Value
+                        ' Update total stock volume by adding in the volumn column value for this entry.
+                        total_stock_volume = total_stock_volume + Cells(i, 7).Value
+                    ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
+                        ' Skipping entries of ticker for other quarters until loop reaches a different ticker.
+                        :
+                    ElseIf Cells(j, 1).Value <> ticker Then
+                        ' Loop has reached a different ticker, so the loop will be stopped.
+                        ' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
+                        i = j-1
+                        Exit For
+                    End If 
+                Next j
+
+                q3.Range("I" & q3_Row).Value = ticker ' Print the Ticker name into the report
+                q3.Range("J" & q3_Row).Value = ticker_close - ticker_open ' Print the Quarterly Change into the report
+                q3.Range("K" & q3_Row).Value = FormatPercent(q3.Range("J" & q3_Row).Value / ticker_open, -1, -1) ' Print the Percent Change, formatted as a percent value, into the report. Found out about FormatPercent function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
+                q3.Range("L" & q3_Row).Value = total_stock_volume ' Print the Total Stock Volume into the report
+                ' Format the Quarterly Change cell color to red if the value < 0 or to green if the value > 0.
+                If (ticker_close - ticker_open) < 0 Then
+                    q3.Range("J" & q3_Row).Interior.ColorIndex = 3 ' Got the code for formatting cell colors from Week 2 Class 3 Activities.
+                ElseIf (ticker_close - ticker_open) > 0 Then
+                    q3.Range("J" & q3_Row).Interior.ColorIndex = 4
+                End If
+
+                q3_Row = q3_Row + 1 ' Move on to the next row in the report.
             End If
-
-            ticker = Cells(i, 1).Value
-            ticker_open = Cells(i, 3).Value
-            ticker_close = Cells(i, 6).Value
-			total_stock_volume = Cells(i, 7).Value
-
-            For j = i+1 To num_entries
-                If Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) >= quarter_months(1) And Month(Cells(j, 2).Value) <= quarter_months(2) Then
-					' Update new close value to the close column value for this entry.
-                    ticker_close = Cells(i, 6).Value
-					' Update total stock volume by adding in the volumn column value for this entry.
-                    total_stock_volume = total_stock_volume + Cells(i, 7).Value
-				ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
-					' Skipping entries of ticker for other quarters until loop reaches a different ticker.
-					Continue For
-				ElseIf Cells(j, 1).Value <> ticker Then
-					' Loop has reached a different ticker, so the loop will be stopped.
-					' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
-					i = j-1
-					Exit For
-                End If 
-            Next j
-
-            q3.Range("I" & q3_Row).Value = ticker ' Print the Ticker name into the report
-            q3.Range("J" & q3_Row).Value = ticker_close - ticker_open ' Print the Quarterly Change into the report
-            q3.Range("K" & q3_Row).Value = FormatPercent(q3.Range("J" & q3_Row).Value / ticker_open, -1, -1) ' Print the Percent Change, formatted as a percent value, into the report. Found out about FormatPercent function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
-            q3.Range("L" & q3_Row).Value = total_stock_volume ' Print the Total Stock Volume into the report
-            ' Format the Quarterly Change cell color to red if the value < 0 or to green if the value > 0.
-            If (ticker_close - ticker_open) < 0 Then
-                q3.Range("J" & q3_Row).Interior.ColorIndex = 3 ' Got the code for formatting cell colors from Week 2 Class 3 Activities.
-            ElseIf (ticker_close - ticker_open) > 0 Then
-                q3.Range("J" & q3_Row).Interior.ColorIndex = 4
-            End If
-
-            q3_Row = q3_Row + 1 ' Move on to the next row in the report.
         Next i
-
     Next ws
 
 End Sub
@@ -269,48 +260,44 @@ Sub Quarter4Report():
         num_entries = ws.Cells(Rows.Count, 1).End(xlUp).Row ' Got the code for counting the rows from Week 2 Class 3 Activities.
         
         For i = 2 To num_entries
-            ' If Then condition that keeps skipping entries until loop reaches the right quarter(1).
+            ' If Then condition that keeps skipping entries until loop reaches the right quarter(4).
             ' Found out about Month function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
             If Month(Cells(i, 2).Value) < quarter_months(1) Then
-                Continue For
+                ticker = Cells(i, 1).Value
+                ticker_open = Cells(i, 3).Value
+                ticker_close = Cells(i, 6).Value
+                total_stock_volume = Cells(i, 7).Value
+
+                For j = i+1 To num_entries
+                    If Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) >= quarter_months(1) And Month(Cells(j, 2).Value) <= quarter_months(2) Then
+                        ' Update new close value to the close column value for this entry.
+                        ticker_close = Cells(i, 6).Value
+                        ' Update total stock volume by adding in the volumn column value for this entry.
+                        total_stock_volume = total_stock_volume + Cells(i, 7).Value
+                    ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
+                        ' Skipping entries of ticker for other quarters until loop reaches a different ticker.
+                        :
+                    ElseIf Cells(j, 1).Value <> ticker Then
+                        ' Loop has reached a different ticker, so the loop will be stopped.
+                        ' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
+                        i = j-1
+                        Exit For
+                    End If 
+                Next j
+
+                q4.Range("I" & q4_Row).Value = ticker ' Print the Ticker name into the report
+                q4.Range("J" & q4_Row).Value = ticker_close - ticker_open ' Print the Quarterly Change into the report
+                q4.Range("K" & q4_Row).Value = FormatPercent(q4.Range("J" & q4_Row).Value / ticker_open, -1, -1) ' Print the Percent Change, formatted as a percent value, into the report. Found out about FormatPercent function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
+                q4.Range("L" & q4_Row).Value = total_stock_volume ' Print the Total Stock Volume into the report
+                ' Format the Quarterly Change cell color to red if the value < 0 or to green if the value > 0.
+                If (ticker_close - ticker_open) < 0 Then
+                    q4.Range("J" & q4_Row).Interior.ColorIndex = 3 ' Got the code for formatting cell colors from Week 2 Class 3 Activities.
+                ElseIf (ticker_close - ticker_open) > 0 Then
+                    q4.Range("J" & q4_Row).Interior.ColorIndex = 4
+                End If
+
+                q4_Row = q4_Row + 1 ' Move on to the next row in the report.
             End If
-
-            ticker = Cells(i, 1).Value
-            ticker_open = Cells(i, 3).Value
-            ticker_close = Cells(i, 6).Value
-			total_stock_volume = Cells(i, 7).Value
-
-            For j = i+1 To num_entries
-                If Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) >= quarter_months(1) And Month(Cells(j, 2).Value) <= quarter_months(2) Then
-					' Update new close value to the close column value for this entry.
-                    ticker_close = Cells(i, 6).Value
-					' Update total stock volume by adding in the volumn column value for this entry.
-                    total_stock_volume = total_stock_volume + Cells(i, 7).Value
-				ElseIf Cells(j, 1).Value = ticker And Month(Cells(j, 2).Value) > quarter_months(2) Then
-					' Skipping entries of ticker for other quarters until loop reaches a different ticker.
-					Continue For
-				ElseIf Cells(j, 1).Value <> ticker Then
-					' Loop has reached a different ticker, so the loop will be stopped.
-					' Before loop is stopped, the outer loop's counter, i.e., i, is set to previous j value, so that the outer loop will start from the current j value, i.e., where the new ticker is located.
-					i = j-1
-					Exit For
-                End If 
-            Next j
-
-            q4.Range("I" & q4_Row).Value = ticker ' Print the Ticker name into the report
-            q4.Range("J" & q4_Row).Value = ticker_close - ticker_open ' Print the Quarterly Change into the report
-            q4.Range("K" & q4_Row).Value = FormatPercent(q4.Range("J" & q4_Row).Value / ticker_open, -1, -1) ' Print the Percent Change, formatted as a percent value, into the report. Found out about FormatPercent function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
-            q4.Range("L" & q4_Row).Value = total_stock_volume ' Print the Total Stock Volume into the report
-            ' Format the Quarterly Change cell color to red if the value < 0 or to green if the value > 0.
-            If (ticker_close - ticker_open) < 0 Then
-                q4.Range("J" & q4_Row).Interior.ColorIndex = 3 ' Got the code for formatting cell colors from Week 2 Class 3 Activities.
-            ElseIf (ticker_close - ticker_open) > 0 Then
-                q4.Range("J" & q4_Row).Interior.ColorIndex = 4
-            End If
-
-            q4_Row = q4_Row + 1 ' Move on to the next row in the report.
         Next i
-
     Next ws
-
 End Sub
