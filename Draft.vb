@@ -23,14 +23,15 @@ Sub Quarter1Report():
     Dim ticker As Variant ' The name of the ticker in this entry.
     Dim ticker_open As Integer ' The opening price of the ticker at the start of quarter(1).
     Dim ticker_close As Integer ' The closing price of the ticker at the end of quarter(1).
-    Dim total_stock_volume As Long ' The total stock volume of a ticker for the entire quarter(1).
+    Dim total_stock_volume As LongLong ' The total stock volume of a ticker for the entire quarter(1).
+    total_stock_volume = 0
     Dim q1 As Worksheet ' The Sheet in which the quarter(1) will be generated.
-    Set q1 = Sheets("Sheet1")
+    Set q1 = Sheets(1)
     Dim q1_Row As Integer ' Tracks the location for each ticker in the quarter(1) report during loops.
     q1_Row = 2
-    Dim quarter_months(1 To 2) As Integer ' The first and last months of the desired quarter(1).
-    quarter_months(1) = 1
-    quarter_months(2) = 3
+    
+    Dim filteredRange As Range ' The Range of data that code will run iteratively upon for the quarter.
+    Dim row As Range ' The counter for looping through filteredRange
 
     ' Print out the headers for the Report
     q1.Range("I1").Value = "Ticker"
@@ -40,9 +41,36 @@ Sub Quarter1Report():
     'AutoFit the columns using code from https://www.automateexcel.com/vba/ranges-cells/#range-properties'
     q1.Columns("I:L").AutoFit
 
+    ' Print out headers/labels for the other table
+    q1.Range("O2").Value = "Greatest % Increase"
+    q1.Range("O3").Value = "Greatest % Decrease"
+    q1.Range("O4").Value = "Greatest Total Volume"
+    q1.Range("P1").Value = "Ticker"
+    q1.Range("Q1").Value = "Value"
+    'AutoFit the columns using code from https://www.automateexcel.com/vba/ranges-cells/#range-properties'
+    q1.Columns("O:Q").AutoFit    
+
     ' Got the code for looping through worksheets from from Week 2 Class 3 Activities.
     For Each ws In Worksheets
         ws.Activate ' Added this after getting advice from Xpert Learning Assitant when CheckDates Subroutine wasn't looping through all the worksheets.
+        
+        ' Got the code for filtering and clearing filters from Xpert Learning Assistant and by recording macros whilst filtering worksheets by quarter in Excel.
+        ws.Range("A:G").AutoFilter Field:=2, Criteria1:=17, Operator:=11, Criteria2:=0, SubField:=0
+
+        ' Code for this and the looping process was developed by altering code received from Xpert Learning Assistant.
+        Set filteredRange = ws.AutoFilter.Range.SpecialCells(xlCellTypeVisible) 
+
+        ' Loop through each visible row in the filtered range
+        For Each row In filteredRange.Rows
+            as
+        Next row
+
+        If ws.AutoFilterMode Then
+            ws.AutoFilterMode = False ' Clear any existing filters
+        End If
+
+        
+
         Dim num_entries As Long
         num_entries = ws.Cells(Rows.Count, 1).End(xlUp).Row ' Got the code for counting the rows from Week 2 Class 3 Activities.
         
@@ -92,16 +120,17 @@ End Sub
 Sub Quarter2Report():
     Dim ws As Worksheet
     Dim ticker As Variant ' The name of the ticker in this entry.
-    Dim ticker_open As Integer ' The opening price of the ticker at the start of quarter(2).
-    Dim ticker_close As Integer ' The closing price of the ticker at the end of quarter(2).
-    Dim total_stock_volume As Long ' The total stock volume of a ticker for the entire quarter(2).
-    Dim q2 As Worksheet ' The Sheet in which the quarter(2) will be generated.
-    Set q2 = Sheets("Sheet2")
-    Dim q2_Row As Integer ' Tracks the location for each ticker in the quarter(2) report during loops.
+    Dim ticker_open As Integer ' The opening price of the ticker at the start of quarter(1).
+    Dim ticker_close As Integer ' The closing price of the ticker at the end of quarter(1).
+    Dim total_stock_volume As LongLong ' The total stock volume of a ticker for the entire quarter(1).
+    total_stock_volume = 0
+    Dim q2 As Worksheet ' The Sheet in which the quarter(1) will be generated.
+    Set q2 = Sheets(2)
+    Dim q2_Row As Integer ' Tracks the location for each ticker in the quarter(1) report during loops.
     q2_Row = 2
-    Dim quarter_months(1 To 2) As Integer ' The first and last months of the desired quarter(2).
-    quarter_months(1) = 4
-    quarter_months(2) = 6
+    
+    Dim filteredRange As Range ' The Range of data that code will run iteratively upon for the quarter.
+    Dim row As Range ' The counter for looping through filteredRange
 
     ' Print out the headers for the Report
     q2.Range("I1").Value = "Ticker"
@@ -111,9 +140,34 @@ Sub Quarter2Report():
     'AutoFit the columns using code from https://www.automateexcel.com/vba/ranges-cells/#range-properties'
     q2.Columns("I:L").AutoFit
 
+    ' Print out headers/labels for the other table
+    q2.Range("O2").Value = "Greatest % Increase"
+    q2.Range("O3").Value = "Greatest % Decrease"
+    q2.Range("O4").Value = "Greatest Total Volume"
+    q2.Range("P1").Value = "Ticker"
+    q2.Range("Q1").Value = "Value"
+    'AutoFit the columns using code from https://www.automateexcel.com/vba/ranges-cells/#range-properties'
+    q2.Columns("O:Q").AutoFit    
+
     ' Got the code for looping through worksheets from from Week 2 Class 3 Activities.
     For Each ws In Worksheets
         ws.Activate ' Added this after getting advice from Xpert Learning Assitant when CheckDates Subroutine wasn't looping through all the worksheets.
+        
+        ' Got the code for filtering and clearing filters from Xpert Learning Assistant and by recording macros whilst filtering worksheets by quarter in Excel.
+        ws.Range("A:G").AutoFilter Field:=2, Criteria1:=17, Operator:=11, Criteria2:=0, SubField:=0
+
+        ' Code for this and the looping process was developed by altering code received from Xpert Learning Assistant.
+        Set filteredRange = ws.AutoFilter.Range.SpecialCells(xlCellTypeVisible) 
+
+        ' Loop through each visible row in the filtered range
+        For Each row In filteredRange.Rows
+            as
+        Next row
+
+        If ws.AutoFilterMode Then
+            ws.AutoFilterMode = False ' Clear any existing filters
+        End If
+
         Dim num_entries As Long
         num_entries = ws.Cells(Rows.Count, 1).End(xlUp).Row ' Got the code for counting the rows from Week 2 Class 3 Activities.
         
@@ -163,16 +217,17 @@ End Sub
 Sub Quarter3Report():
     Dim ws As Worksheet
     Dim ticker As Variant ' The name of the ticker in this entry.
-    Dim ticker_open As Integer ' The opening price of the ticker at the start of quarter(3).
-    Dim ticker_close As Integer ' The closing price of the ticker at the end of quarter(3).
-    Dim total_stock_volume As Long ' The total stock volume of a ticker for the entire quarter(3).
-    Dim q3 As Worksheet ' The Sheet in which the quarter(3) will be generated.
-    Set q3 = Sheets("Sheet3")
-    Dim q3_Row As Integer ' Tracks the location for each ticker in the quarter(3) report during loops.
+    Dim ticker_open As Integer ' The opening price of the ticker at the start of quarter(1).
+    Dim ticker_close As Integer ' The closing price of the ticker at the end of quarter(1).
+    Dim total_stock_volume As LongLong ' The total stock volume of a ticker for the entire quarter(1).
+    total_stock_volume = 0
+    Dim q3 As Worksheet ' The Sheet in which the quarter(1) will be generated.
+    Set q3 = Sheets(3)
+    Dim q3_Row As Integer ' Tracks the location for each ticker in the quarter(1) report during loops.
     q3_Row = 2
-    Dim quarter_months(1 To 2) As Integer ' The first and last months of the desired quarter(3).
-    quarter_months(1) = 7
-    quarter_months(2) = 9
+    
+    Dim filteredRange As Range ' The Range of data that code will run iteratively upon for the quarter.
+    Dim row As Range ' The counter for looping through filteredRange
 
     ' Print out the headers for the Report
     q3.Range("I1").Value = "Ticker"
@@ -182,9 +237,34 @@ Sub Quarter3Report():
     'AutoFit the columns using code from https://www.automateexcel.com/vba/ranges-cells/#range-properties'
     q3.Columns("I:L").AutoFit
 
+    ' Print out headers/labels for the other table
+    q3.Range("O2").Value = "Greatest % Increase"
+    q3.Range("O3").Value = "Greatest % Decrease"
+    q3.Range("O4").Value = "Greatest Total Volume"
+    q3.Range("P1").Value = "Ticker"
+    q3.Range("Q1").Value = "Value"
+    'AutoFit the columns using code from https://www.automateexcel.com/vba/ranges-cells/#range-properties'
+    q3.Columns("O:Q").AutoFit    
+
     ' Got the code for looping through worksheets from from Week 2 Class 3 Activities.
     For Each ws In Worksheets
         ws.Activate ' Added this after getting advice from Xpert Learning Assitant when CheckDates Subroutine wasn't looping through all the worksheets.
+        
+        ' Got the code for filtering and clearing filters from Xpert Learning Assistant and by recording macros whilst filtering worksheets by quarter in Excel.
+        ws.Range("A:G").AutoFilter Field:=2, Criteria1:=17, Operator:=11, Criteria2:=0, SubField:=0
+
+        ' Code for this and the looping process was developed by altering code received from Xpert Learning Assistant.
+        Set filteredRange = ws.AutoFilter.Range.SpecialCells(xlCellTypeVisible) 
+
+        ' Loop through each visible row in the filtered range
+        For Each row In filteredRange.Rows
+            as
+        Next row
+
+        If ws.AutoFilterMode Then
+            ws.AutoFilterMode = False ' Clear any existing filters
+        End If
+        
         Dim num_entries As Long
         num_entries = ws.Cells(Rows.Count, 1).End(xlUp).Row ' Got the code for counting the rows from Week 2 Class 3 Activities.
         
@@ -234,16 +314,17 @@ End Sub
 Sub Quarter4Report():
     Dim ws As Worksheet
     Dim ticker As Variant ' The name of the ticker in this entry.
-    Dim ticker_open As Integer ' The opening price of the ticker at the start of quarter(4).
-    Dim ticker_close As Integer ' The closing price of the ticker at the end of quarter(4).
-    Dim total_stock_volume As Long ' The total stock volume of a ticker for the entire quarter(4).
-    Dim q4 As Worksheet ' The Sheet in which the quarter(4) will be generated.
-    Set q4 = Sheets("Sheet4")
-    Dim q4_Row As Integer ' Tracks the location for each ticker in the quarter(4) report during loops.
+    Dim ticker_open As Integer ' The opening price of the ticker at the start of quarter(1).
+    Dim ticker_close As Integer ' The closing price of the ticker at the end of quarter(1).
+    Dim total_stock_volume As LongLong ' The total stock volume of a ticker for the entire quarter(1).
+    total_stock_volume = 0
+    Dim q4 As Worksheet ' The Sheet in which the quarter(1) will be generated.
+    Set q4 = Sheets(4)
+    Dim q4_Row As Integer ' Tracks the location for each ticker in the quarter(1) report during loops.
     q4_Row = 2
-    Dim quarter_months(1 To 2) As Integer ' The first and last months of the desired quarter(4).
-    quarter_months(1) = 10
-    quarter_months(2) = 12
+    
+    Dim filteredRange As Range ' The Range of data that code will run iteratively upon for the quarter.
+    Dim row As Range ' The counter for looping through filteredRange
 
     ' Print out the headers for the Report
     q4.Range("I1").Value = "Ticker"
@@ -253,9 +334,34 @@ Sub Quarter4Report():
     'AutoFit the columns using code from https://www.automateexcel.com/vba/ranges-cells/#range-properties'
     q4.Columns("I:L").AutoFit
 
+    ' Print out headers/labels for the other table
+    q4.Range("O2").Value = "Greatest % Increase"
+    q4.Range("O3").Value = "Greatest % Decrease"
+    q4.Range("O4").Value = "Greatest Total Volume"
+    q4.Range("P1").Value = "Ticker"
+    q4.Range("Q1").Value = "Value"
+    'AutoFit the columns using code from https://www.automateexcel.com/vba/ranges-cells/#range-properties'
+    q4.Columns("O:Q").AutoFit    
+
     ' Got the code for looping through worksheets from from Week 2 Class 3 Activities.
     For Each ws In Worksheets
         ws.Activate ' Added this after getting advice from Xpert Learning Assitant when CheckDates Subroutine wasn't looping through all the worksheets.
+        
+        ' Got the code for filtering and clearing filters from Xpert Learning Assistant and by recording macros whilst filtering worksheets by quarter in Excel.
+        ws.Range("A:G").AutoFilter Field:=2, Criteria1:=17, Operator:=11, Criteria2:=0, SubField:=0
+
+        ' Code for this and the looping process was developed by altering code received from Xpert Learning Assistant.
+        Set filteredRange = ws.AutoFilter.Range.SpecialCells(xlCellTypeVisible) 
+
+        ' Loop through each visible row in the filtered range
+        For Each row In filteredRange.Rows
+            as
+        Next row
+
+        If ws.AutoFilterMode Then
+            ws.AutoFilterMode = False ' Clear any existing filters
+        End If
+
         Dim num_entries As Long
         num_entries = ws.Cells(Rows.Count, 1).End(xlUp).Row ' Got the code for counting the rows from Week 2 Class 3 Activities.
         
