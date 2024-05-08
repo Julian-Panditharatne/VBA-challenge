@@ -1,11 +1,10 @@
 Sub QuarterReport():
     Dim qt As Worksheet
-    Dim ticker As Variant ' The name of the ticker in this entry.
-    Dim ticker_open As Integer ' The opening price of the ticker at the start of quarter(1).
-    Dim ticker_close As Integer ' The closing price of the ticker at the end of quarter(1).
-    Dim total_stock_volume As LongLong ' The total stock volume of a ticker for the entire quarter(1).
+    Dim total_stock_volume As LongLong ' The total stock volume of a ticker for the entire quarter.
     total_stock_volume = 0
-    
+    Dim qt_Row As Integer ' Tracks the location for each ticker in the quarter report during loops.
+    qt_Row = 2
+
     Dim filteredRange As Range ' The Range of data that code will run iteratively upon for the quarter.
     Dim row As Range ' The counter for looping through filteredRange
 
@@ -33,8 +32,35 @@ Sub QuarterReport():
         num_entries = qt.Cells(Rows.Count, 1).End(xlUp).Row ' Got the code for counting the rows from Week 2 Class 3 Activities.
         
         For i = 2 To num_entries
-            
+            ' If the loop has reached a different ticker, input all the values into the reports.
+            If qt.Cells(i + 1, 1).Value <> qt.Cells(i, 1).Value Then
+                qt.Range("I" & qt_Row).Value = qt.Cells(i, 1).Value ' Print the Ticker name into the report
+                qt.Range("J" & qt_Row).Value = qt.Cells(i, 6).Value - qt.Range("H1").Value ' Print the Quarterly Change into the report
+                qt.Range("K" & qt_Row).Value = FormatPercent(qt.Range("J" & qt_Row).Value / qt.Range("H1").Value, -1, -1) ' Print the Percent Change, formatted as a percent value, into the report. Found out about FormatPercent function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
+                qt.Range("L" & qt_Row).Value = total_stock_volume + Cells(i,7).Value' Print the Total Stock Volume into the report
+                ' Format the Quarterly Change cell color to red if the value < 0 or to green if the value > 0.
+                If qt.Range("J" & qt_Row).Value < 0 Then
+                    qt.Range("J" & qt_Row).Interior.ColorIndex = 3 ' Got the code for formatting cell colors from Week 2 Class 3 Activities.
+                ElseIf qt.Range("J" & qt_Row).Value > 0 Then
+                    qt.Range("J" & qt_Row).Interior.ColorIndex = 4
+                End If
+
+                qt_Row = qt_Row + 1 ' Move on to the next row in the report, since the next ticker has been reached.
+            Else
+                ' Using the H1 cell to store the ticker's open price at the start of the quarter
+                If IsEmpty(qt.Range("H1")) Then
+                    qt.Range("H1").Value = qt.Cells(i, 3).Value
+                End If
+                total_stock_volume = total_stock_volume + Cells(i,7).Value ' Adding up the ticker's volume for each day in the quarter.
+            End if
         Next i
+        ' Now that the Quarterly Report is filled out, calculate all the maximum and minimum values of this quarter.
+        qt.Range("P2").Value = ' Print the name of ticker with the greatest % increase.
+        qt.Range("Q2").Value = ' Print the greatest % increase value.
+        qt.Range("P3").Value = ' Print the name of ticker with the greatest % decrease.
+        qt.Range("Q3").Value = ' Print the greatest % decrease value.
+        qt.Range("P4").Value = ' Print the name of ticker with the greatest total volume.
+        qt.Range("Q4").Value = ' Print the greatest total volume value.
     Next qt
 
 End Sub
