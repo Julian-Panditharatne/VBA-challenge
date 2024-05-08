@@ -62,7 +62,18 @@ Sub Quarter1Report():
 
         ' Loop through each visible row in the filtered range
         For Each row In filteredRange.Rows
-            as
+            Dim nextRow As Range ' The next row in the loop
+            Dim rowIndex As Long
+
+            ' Get the row index of the current row
+            rowIndex = row.Row - filteredRange.Row + 1
+
+            ' Calculate the row index of the next row
+            If rowIndex < filteredRange.Rows.Count Then
+                Set nextRow = filteredRange.Rows(rowIndex + 1)
+            Else
+                ' The last row in filteredRange is reached.
+            End If
         Next row
 
         If ws.AutoFilterMode Then
@@ -154,7 +165,7 @@ Sub Quarter2Report():
         ws.Activate ' Added this after getting advice from Xpert Learning Assitant when CheckDates Subroutine wasn't looping through all the worksheets.
         
         ' Got the code for filtering and clearing filters from Xpert Learning Assistant and by recording macros whilst filtering worksheets by quarter in Excel.
-        ws.Range("A:G").AutoFilter Field:=2, Criteria1:=17, Operator:=11, Criteria2:=0, SubField:=0
+        ws.Range("A:G").AutoFilter Field:=2, Criteria1:=18, Operator:=11, Criteria2:=0, SubField:=0
 
         ' Code for this and the looping process was developed by altering code received from Xpert Learning Assistant.
         Set filteredRange = ws.AutoFilter.Range.SpecialCells(xlCellTypeVisible) 
@@ -251,7 +262,7 @@ Sub Quarter3Report():
         ws.Activate ' Added this after getting advice from Xpert Learning Assitant when CheckDates Subroutine wasn't looping through all the worksheets.
         
         ' Got the code for filtering and clearing filters from Xpert Learning Assistant and by recording macros whilst filtering worksheets by quarter in Excel.
-        ws.Range("A:G").AutoFilter Field:=2, Criteria1:=17, Operator:=11, Criteria2:=0, SubField:=0
+        ws.Range("A:G").AutoFilter Field:=2, Criteria1:=19, Operator:=11, Criteria2:=0, SubField:=0
 
         ' Code for this and the looping process was developed by altering code received from Xpert Learning Assistant.
         Set filteredRange = ws.AutoFilter.Range.SpecialCells(xlCellTypeVisible) 
@@ -348,7 +359,7 @@ Sub Quarter4Report():
         ws.Activate ' Added this after getting advice from Xpert Learning Assitant when CheckDates Subroutine wasn't looping through all the worksheets.
         
         ' Got the code for filtering and clearing filters from Xpert Learning Assistant and by recording macros whilst filtering worksheets by quarter in Excel.
-        ws.Range("A:G").AutoFilter Field:=2, Criteria1:=17, Operator:=11, Criteria2:=0, SubField:=0
+        ws.Range("A:G").AutoFilter Field:=2, Criteria1:=20, Operator:=11, Criteria2:=0, SubField:=0
 
         ' Code for this and the looping process was developed by altering code received from Xpert Learning Assistant.
         Set filteredRange = ws.AutoFilter.Range.SpecialCells(xlCellTypeVisible) 
