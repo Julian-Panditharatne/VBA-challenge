@@ -8,9 +8,9 @@ Sub QuarterReport():
     Dim filteredRange As Range ' The Range of data that code will run iteratively upon for the quarter.
     Dim row As Range ' The counter for looping through filteredRange
 
-    ' Got the code for looping through worksheets from from Week 2 Class 3 Activities.
+    ' Got the code for looping through worksheets from Week 2 Class 3 Activities.
     For Each qt In Worksheets
-        qt.Activate ' Added this after getting advice from Xpert Learning Assitant when CheckDates Subroutine wasn't looping through all the worksheets.
+        qt.Activate ' Added this after getting advice from Xpert Learning Assitant a subroutine wasn't looping through all the worksheets.
         ' Print out the headers for the Report
         qt.Range("I1").Value = "Ticker"
         qt.Range("J1").Value = "Quarterly Change"
@@ -36,7 +36,7 @@ Sub QuarterReport():
             If qt.Cells(i + 1, 1).Value <> qt.Cells(i, 1).Value Then
                 qt.Range("I" & qt_Row).Value = qt.Cells(i, 1).Value ' Print the Ticker name into the report
                 qt.Range("J" & qt_Row).Value = qt.Cells(i, 6).Value - qt.Range("H1").Value ' Print the Quarterly Change into the report
-                qt.Range("K" & qt_Row).Value = FormatPercent(qt.Range("J" & qt_Row).Value / qt.Range("H1").Value, -1, -1) ' Print the Percent Change, formatted as a percent value, into the report. Found out about FormatPercent function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
+                qt.Range("K" & qt_Row).Value = FormatPercent(qt.Range("J" & qt_Row).Value / qt.Range("H1").Value, -1, -1) ' Print the Percent Change, formatted as a percent value, into the report. Found out about FormatPercent function from https://learn.microsoft.com/en-us/office/vba/language/reference/user-interface-help/formatpercent-function
                 qt.Range("L" & qt_Row).Value = total_stock_volume + Cells(i,7).Value' Print the Total Stock Volume into the report
                 ' Format the Quarterly Change and Percent Change cells' colors to red if the value < 0 or to green if the value > 0.
                 If qt.Range("J" & qt_Row).Value < 0 Then
