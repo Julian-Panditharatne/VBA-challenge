@@ -44,7 +44,7 @@ Sub QuarterReport():
                 ElseIf qt.Range("J" & qt_Row).Value > 0 Then
                     qt.Range("J" & qt_Row).Interior.ColorIndex = 4
                 End If
-
+                qt.Range("H1").ClearContents ' Empties H1 cell in order to store the next ticker's open price at the start of the quarter.
                 qt_Row = qt_Row + 1 ' Move on to the next row in the report, since the next ticker has been reached.
             Else
                 ' Using the H1 cell to store the ticker's open price at the start of the quarter
@@ -55,12 +55,23 @@ Sub QuarterReport():
             End if
         Next i
         ' Now that the Quarterly Report is filled out, calculate all the maximum and minimum values of this quarter.
-        qt.Range("P2").Value = ' Print the name of ticker with the greatest % increase.
-        qt.Range("Q2").Value = ' Print the greatest % increase value.
-        qt.Range("P3").Value = ' Print the name of ticker with the greatest % decrease.
-        qt.Range("Q3").Value = ' Print the greatest % decrease value.
-        qt.Range("P4").Value = ' Print the name of ticker with the greatest total volume.
-        qt.Range("Q4").Value = ' Print the greatest total volume value.
-    Next qt
+        Dim maxOrmin As LongLong ' variable to hold the maximum or minimum value needed to be printed at the moment
+        Dim maxOrminRow As Long ' variable to hold the index of the row where maxOrmin is found.
 
+        ' Found out how to use the Max and Min functions as well as the Find and Row methods of Range in this way from Xpert Learning Assistant.
+        maxOrmin = Application.WorksheetFunction.Max(qt.Range("K2:K" & num_entries)) ' The greatest % increase value.
+        qt.Range("Q2").Value = maxOrmin ' Print the greatest % increase value.
+        maxOrminRow = qt.Range("K2:K" & num_entries).Find(What:= maxOrmin).Row
+        qt.Range("P2").Value = qt.Range("I" & maxOrminRow).Value ' Print the name of ticker with the greatest % increase.
+        
+        maxOrmin = Application.WorksheetFunction.Min(qt.Range("K2:K" & num_entries)) ' The greatest % decrease value.
+        qt.Range("Q3").Value = maxOrmin ' Print the greatest % decrease value.
+        maxOrminRow = qt.Range("K2:K" & num_entries).Find(What:= maxOrmin).Row
+        qt.Range("P3").Value = qt.Range("I" & maxOrminRow).Value ' Print the name of ticker with the greatest % decrease.
+        
+        maxOrmin = Application.WorksheetFunction.Max(qt.Range("L2:L" & num_entries))' The greatest total volume value.
+        qt.Range("Q4").Value = maxOrmin' Print the greatest total volume value.
+        maxOrminRow = qt.Range("L2:L" & num_entries).Find(What:= maxOrmin).Row
+        qt.Range("P4").Value = qt.Range("I" & maxOrminRow).Value ' Print the name of ticker with the greatest total volume.
+    Next qt
 End Sub
