@@ -32,7 +32,7 @@ Sub QuarterReport():
         num_entries = qt.Cells(Rows.Count, 1).End(xlUp).Row ' Got the code for counting the rows from Week 2 Class 3 Activities.
         
         For i = 2 To num_entries
-            ' If the loop has reached a different ticker, input all the values into the reports.
+            ' If the loop has reached a different ticker, input all the values into the report for the current ticker.
             If qt.Cells(i + 1, 1).Value <> qt.Cells(i, 1).Value Then
                 qt.Range("I" & qt_Row).Value = qt.Cells(i, 1).Value ' Print the Ticker name into the report
                 qt.Range("J" & qt_Row).Value = qt.Cells(i, 6).Value - qt.Range("H1").Value ' Print the Quarterly Change into the report
@@ -56,11 +56,11 @@ Sub QuarterReport():
             End if
         Next i
 
-        qt_Row = 2 ' Reset this back to the second row before moving on to the next Worksheet.
+        qt_Row = 2 ' Reset this back to the second row before moving on to the next Worksheet(i.e., the next quarter).
 
         ' Now that the Quarterly Report is filled out, calculate all the maximum and minimum values of this quarter.
-        num_entries = qt.Cells(Rows.Count, 9).End(xlUp).Row
-        Dim maxOrmin As LongLong ' variable to hold the maximum or minimum value needed to be printed at the moment
+        num_entries = qt.Cells(Rows.Count, 9).End(xlUp).Row ' Count all the rows in the quarterly report.
+        Dim maxOrmin As LongLong ' variable to hold the maximum or minimum value needed to be printed at the moment.
         Dim maxOrminRow As Long ' variable to hold the index of the row where maxOrmin is found.
 
         ' Found out how to use the Max and Min functions as well as the Find and Row methods of Range in this way from Xpert Learning Assistant.
