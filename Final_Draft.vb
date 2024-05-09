@@ -45,6 +45,7 @@ Sub QuarterReport():
                     qt.Range("J" & qt_Row).Interior.ColorIndex = 4
                 End If
                 qt.Range("H1").ClearContents ' Empties H1 cell in order to store the next ticker's open price at the start of the quarter.
+                total_stock_volume = 0 ' Reset this to 0, so that it only sums the total stock volume of the next ticker.
                 qt_Row = qt_Row + 1 ' Move on to the next row in the report, since the next ticker has been reached.
             Else
                 ' Using the H1 cell to store the ticker's open price at the start of the quarter
@@ -54,7 +55,11 @@ Sub QuarterReport():
                 total_stock_volume = total_stock_volume + Cells(i,7).Value ' Adding up the ticker's volume for each day in the quarter.
             End if
         Next i
+
+        qt_Row = 2 ' Reset this back to the second row before moving on to the next Worksheet.
+
         ' Now that the Quarterly Report is filled out, calculate all the maximum and minimum values of this quarter.
+        num_entries = qt.Cells(Rows.Count, 9).End(xlUp).Row
         Dim maxOrmin As LongLong ' variable to hold the maximum or minimum value needed to be printed at the moment
         Dim maxOrminRow As Long ' variable to hold the index of the row where maxOrmin is found.
 
