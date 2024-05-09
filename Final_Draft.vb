@@ -38,11 +38,13 @@ Sub QuarterReport():
                 qt.Range("J" & qt_Row).Value = qt.Cells(i, 6).Value - qt.Range("H1").Value ' Print the Quarterly Change into the report
                 qt.Range("K" & qt_Row).Value = FormatPercent(qt.Range("J" & qt_Row).Value / qt.Range("H1").Value, -1, -1) ' Print the Percent Change, formatted as a percent value, into the report. Found out about FormatPercent function from https://learn.microsoft.com/en-us/office/vba/language/reference/functions-visual-basic-for-applications
                 qt.Range("L" & qt_Row).Value = total_stock_volume + Cells(i,7).Value' Print the Total Stock Volume into the report
-                ' Format the Quarterly Change cell color to red if the value < 0 or to green if the value > 0.
+                ' Format the Quarterly Change and Percent Change cells' colors to red if the value < 0 or to green if the value > 0.
                 If qt.Range("J" & qt_Row).Value < 0 Then
                     qt.Range("J" & qt_Row).Interior.ColorIndex = 3 ' Got the code for formatting cell colors from Week 2 Class 3 Activities.
+                    qt.Range("K" & qt_Row).Interior.ColorIndex = 3
                 ElseIf qt.Range("J" & qt_Row).Value > 0 Then
                     qt.Range("J" & qt_Row).Interior.ColorIndex = 4
+                    qt.Range("K" & qt_Row).Interior.ColorIndex = 4
                 End If
                 qt.Range("H1").ClearContents ' Empties H1 cell in order to store the next ticker's open price at the start of the quarter.
                 total_stock_volume = 0 ' Reset this to 0, so that it only sums the total stock volume of the next ticker.
