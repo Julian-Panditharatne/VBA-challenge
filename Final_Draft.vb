@@ -60,24 +60,45 @@ Sub QuarterReport():
 
         ' Now that the Quarterly Report is filled out, calculate all the maximum and minimum values of this quarter.
         num_entries = qt.Cells(Rows.Count, 9).End(xlUp).Row ' Count all the rows in the quarterly report.
-        Dim maxOrmin As LongLong ' variable to hold the maximum or minimum value needed to be printed at the moment.
-        Dim maxOrminRow As Long ' variable to hold the index of the row where maxOrmin is found.
+        Dim percMax As Double
+        percMax = 0
+        Dim percMin As Double
+        percMin = 0
+        Dim percMaxName As String
+        Dim percMinName As String  
+        Dim maxStock As LongLong ' variable to hold the maximum value of Total Stock Volumes.
+        maxStock = 0
+        Dim maxStockName As String 
 
-        ' Found out how to use the Max and Min functions as well as the Find and Row methods of Range in this way from Xpert Learning Assistant.
-        maxOrmin = Application.WorksheetFunction.Max(qt.Range("K2:K" & num_entries)) ' The greatest % increase value.
-        qt.Range("Q2").Value = maxOrmin ' Print the greatest % increase value.
-        maxOrminRow = qt.Range("K2:K" & num_entries).Find(What:=maxOrmin, LookIn:=xlValues).Row ' Modified the Range.Find method usage based on how it is used in the Microssoft documentation examples.
+        For x = 2 To num_entries
+            Dim percentage As Double ' Use this to store the Quarterly Change Percentage as a Double.
+            percentage = CDbl(qt.Range("K" & x).Value) / 100
+            Dim total_stock As LongLong 
+            total_stock = qt.Range("L" & x).Value
+
+            If percentage > percMax Then
+                ' Get the highest percentage and store it as the maximum value, and store the name of the ticker that has the value.
+                percMax = percentage
+                percMaxName = qt.Range("I" & x).Value
+            ElseIf percentage < percMin Then
+                ' Get the lowest percentage and store it as the minimum value, and store the name of the ticker that has the value.
+                percMin = percentage
+                percMinName = qt.Range("I" & x).Value
+            ElseIf total_stock > maxStock Then
+                ' Get the highest total stock volume and store it as the maximum, and store the name of the ticker that has the value.
+                maxStock = total_stock
+                maxStockName = qt.Range("I" & x).Value
+            End If
+        Next x
+        
+        qt.Range("Q2").Value = FormatPercent(percMax, -1, -1) ' Print the greatest % increase value.
         qt.Range("P2").Value = qt.Range("I" & maxOrminRow).Value ' Print the name of ticker with the greatest % increase.
         
-        maxOrmin = Application.WorksheetFunction.Min(qt.Range("K2:K" & num_entries)) ' The greatest % decrease value.
-        qt.Range("Q3").Value = maxOrmin ' Print the greatest % decrease value.
-        maxOrminRow = qt.Range("K2:K" & num_entries).Find(What:=maxOrmin, LookIn:=xlValues).Row
+        qt.Range("Q3").Value = FormatPercent( , -1, -1) ' Print the greatest % decrease value.
         qt.Range("P3").Value = qt.Range("I" & maxOrminRow).Value ' Print the name of ticker with the greatest % decrease.
         
-        maxOrmin = Application.WorksheetFunction.Max(qt.Range("L2:L" & num_entries))' The greatest total volume value.
-        qt.Range("Q4").Value = maxOrmin' Print the greatest total volume value.
-        maxOrminRow = qt.Range("L2:L" & num_entries).Find(What:=maxOrmin, LookIn:=xlValues).Row
-        qt.Range("P4").Value = qt.Range("I" & maxOrminRow).Value ' Print the name of ticker with the greatest total volume.
+        qt.Range("Q4").Value = maxStock' Print the greatest total volume value.
+        qt.Range("P4").Value = maxStockName ' Print the name of ticker with the greatest total volume.
         
         'AutoFit the columns again
         qt.Columns("O:Q").AutoFit
