@@ -92,10 +92,10 @@ Sub QuarterReport():
         Next x
         
         qt.Range("Q2").Value = FormatPercent(percMax, -1, -1) ' Print the greatest % increase value.
-        qt.Range("P2").Value = qt.Range("I" & maxOrminRow).Value ' Print the name of ticker with the greatest % increase.
+        qt.Range("P2").Value = percMaxName ' Print the name of ticker with the greatest % increase.
         
-        qt.Range("Q3").Value = FormatPercent( , -1, -1) ' Print the greatest % decrease value.
-        qt.Range("P3").Value = qt.Range("I" & maxOrminRow).Value ' Print the name of ticker with the greatest % decrease.
+        qt.Range("Q3").Value = FormatPercent(percMin, -1, -1) ' Print the greatest % decrease value.
+        qt.Range("P3").Value = percMinName ' Print the name of ticker with the greatest % decrease.
         
         qt.Range("Q4").Value = maxStock' Print the greatest total volume value.
         qt.Range("P4").Value = maxStockName ' Print the name of ticker with the greatest total volume.
