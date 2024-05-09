@@ -66,17 +66,20 @@ Sub QuarterReport():
         ' Found out how to use the Max and Min functions as well as the Find and Row methods of Range in this way from Xpert Learning Assistant.
         maxOrmin = Application.WorksheetFunction.Max(qt.Range("K2:K" & num_entries)) ' The greatest % increase value.
         qt.Range("Q2").Value = maxOrmin ' Print the greatest % increase value.
-        maxOrminRow = qt.Range("K2:K" & num_entries).Find(What:= maxOrmin).Row
+        maxOrminRow = qt.Range("K2:K" & num_entries).Find(What:=maxOrmin, LookIn:=xlValues).Row ' Modified the Range.Find method usage based on how it is used in the Microssoft documentation examples.
         qt.Range("P2").Value = qt.Range("I" & maxOrminRow).Value ' Print the name of ticker with the greatest % increase.
         
         maxOrmin = Application.WorksheetFunction.Min(qt.Range("K2:K" & num_entries)) ' The greatest % decrease value.
         qt.Range("Q3").Value = maxOrmin ' Print the greatest % decrease value.
-        maxOrminRow = qt.Range("K2:K" & num_entries).Find(What:= maxOrmin).Row
+        maxOrminRow = qt.Range("K2:K" & num_entries).Find(What:=maxOrmin, LookIn:=xlValues).Row
         qt.Range("P3").Value = qt.Range("I" & maxOrminRow).Value ' Print the name of ticker with the greatest % decrease.
         
         maxOrmin = Application.WorksheetFunction.Max(qt.Range("L2:L" & num_entries))' The greatest total volume value.
         qt.Range("Q4").Value = maxOrmin' Print the greatest total volume value.
-        maxOrminRow = qt.Range("L2:L" & num_entries).Find(What:= maxOrmin).Row
+        maxOrminRow = qt.Range("L2:L" & num_entries).Find(What:=maxOrmin, LookIn:=xlValues).Row
         qt.Range("P4").Value = qt.Range("I" & maxOrminRow).Value ' Print the name of ticker with the greatest total volume.
+        
+        'AutoFit the columns again
+        qt.Columns("O:Q").AutoFit
     Next qt
 End Sub
